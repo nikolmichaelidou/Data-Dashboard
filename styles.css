@@ -8,7 +8,7 @@
   --color-surface: #121a2f;
   --color-text: #e7ecf5;
   --color-muted: #a9b3c9;
-  --color-accent: #d4a72c;     /* gold */
+  /* --color-accent: #d4a72c;     gold - removed duplicate */
   --color-accent-2: #5ec5b9;   /* teal */
   --color-border: rgba(231, 236, 245, 0.12);
 
@@ -78,7 +78,6 @@ h2 {
 }
 
 footer {
-  color: #555;
   font-size: 0.9rem;
   padding: 1rem 0;
 

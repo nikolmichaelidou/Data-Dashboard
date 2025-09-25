@@ -231,7 +231,7 @@ function importTrendsCSV(file) {
       popularityChart.update();
     } catch (e) {
       console.error(e);
-      alert('Failed to import CSV. Ensure it is a Google Trends export.');
+      alert(`Failed to import CSV: ${e.message}\n\nExpected format: Google Trends export with a header like "Month,Arcane" or "Week,Arcane".`);
     }
   };
   reader.readAsText(file);
