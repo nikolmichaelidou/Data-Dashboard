@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="static/favicon.ico">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Data Dashboard</h1>
+    </header>
+    <main>
+        <section id="data-visualization">
+            <h2>Data Visualization</h2>
+            <p>Arcane popularity over time (simulated demo; replace with real data when available).</p>
+            <div id="controls">
+                <label><input id="chk-search" type="checkbox" checked> Search interest (0–100)</label>
+                <label><input id="chk-social" type="checkbox" checked> Social mentions (0–100)</label>
+                <a id="open-trends" href="https://trends.google.com/trends/explore?q=Arcane" target="_blank" rel="noopener">Open Google Trends</a>
+                <label>
+                  <input type="file" id="csv-input" accept=".csv">
+                  Import Google Trends CSV
+                </label>
+            </div>
+            <div id="chart-container">
+                <canvas id="popularityChart" aria-label="Line chart showing Arcane popularity over time" role="img"></canvas>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Data Dashboard</p>
+    </footer>
+
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" crossorigin="anonymous"></script>
+    <script src="app.js"></script>
+</body>
+</html>
