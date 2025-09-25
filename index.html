@@ -18,6 +18,11 @@
             <div id="controls">
                 <label><input id="chk-search" type="checkbox" checked> Search interest (0–100)</label>
                 <label><input id="chk-social" type="checkbox" checked> Social mentions (0–100)</label>
+                <a id="open-trends" href="https://trends.google.com/trends/explore?q=Arcane" target="_blank" rel="noopener">Open Google Trends</a>
+                <label>
+                  <input type="file" id="csv-input" accept=".csv">
+                  Import Google Trends CSV
+                </label>
             </div>
             <div id="chart-container">
                 <canvas id="popularityChart" aria-label="Line chart showing Arcane popularity over time" role="img"></canvas>
