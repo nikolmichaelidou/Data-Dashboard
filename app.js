@@ -45,8 +45,8 @@ const releaseLines = {
   afterDatasetsDraw(chart) {
     const { ctx, scales: { x, y } } = chart;
     const releases = [
-      { label: 'S1 release', tick: s1Label, color: '#f59e0b' },
-      { label: 'S2 release', tick: s2Label, color: '#10b981' }
+      { label: 'S1 release', tick: s1Label, color: '#875484' }, // Razzmic Berry
+      { label: 'S2 release', tick: s2Label, color: '#EB1C6B' }  // Razzmatazz
     ];
     ctx.save();
     releases.forEach(r => {
@@ -76,8 +76,8 @@ const popularityChart = new Chart(ctx, {
       {
         label: 'Search interest',
         data: searchInterest,
-        borderColor: '#6366f1',
-        backgroundColor: 'rgba(99,102,241,0.15)',
+        borderColor: '#3996FA',                  // Dodger Blue
+        backgroundColor: 'rgba(57,150,250,0.15)',
         tension: 0.25,
         pointRadius: 0,
         borderWidth: 2
@@ -85,8 +85,8 @@ const popularityChart = new Chart(ctx, {
       {
         label: 'Social mentions',
         data: socialMentions,
-        borderColor: '#ef4444',
-        backgroundColor: 'rgba(239,68,68,0.12)',
+        borderColor: '#D93D8D',                  // Deep Cerise
+        backgroundColor: 'rgba(217,61,141,0.12)',
         tension: 0.25,
         pointRadius: 0,
         borderWidth: 2
