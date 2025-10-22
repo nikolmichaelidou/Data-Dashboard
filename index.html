@@ -25,9 +25,19 @@
                   Import Google Trends CSV
                 </label>
                 <button id="reset-data" class="btn" type="button" title="Reset to simulated data">Reset data</button>
+                <span class="divider">|</span>
+                <button id="show-chart" class="btn btn-active" type="button">Chart view</button>
+                <button id="show-trends" class="btn" type="button">Trends embed</button>
             </div>
             <div id="chart-container">
                 <canvas id="popularityChart" aria-label="Line chart showing Arcane popularity over time" role="img"></canvas>
+            </div>
+            <div id="trends-container" style="display: none;">
+                <iframe id="trends-iframe" 
+                        src="https://trends.google.com/trends/embed/explore/TIMESERIES?req=%7B%22comparisonItem%22%3A%5B%7B%22keyword%22%3A%22Arcane%22%2C%22geo%22%3A%22%22%2C%22time%22%3A%222021-01-01%202025-12-31%22%7D%5D%2C%22category%22%3A0%2C%22property%22%3A%22%22%7D&tz=-60&eq=q%3DArcane"
+                        frameborder="0"
+                        allowfullscreen>
+                </iframe>
             </div>
         </section>
     </main>

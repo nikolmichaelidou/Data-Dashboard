@@ -274,5 +274,21 @@ document.addEventListener('DOMContentLoaded', () => {
     popularityChart.options.plugins.title.text = 'Arcane popularity — Google Trends (cached)';
     popularityChart.update();
   }
+  
   document.getElementById('reset-data')?.addEventListener('click', resetToSimulated);
+
+  // View toggle handlers
+  document.getElementById('show-chart')?.addEventListener('click', () => {
+    document.getElementById('chart-container').style.display = 'block';
+    document.getElementById('trends-container').style.display = 'none';
+    document.getElementById('show-chart').classList.add('btn-active');
+    document.getElementById('show-trends').classList.remove('btn-active');
+  });
+
+  document.getElementById('show-trends')?.addEventListener('click', () => {
+    document.getElementById('chart-container').style.display = 'none';
+    document.getElementById('trends-container').style.display = 'block';
+    document.getElementById('show-chart').classList.remove('btn-active');
+    document.getElementById('show-trends').classList.add('btn-active');
+  });
 });
