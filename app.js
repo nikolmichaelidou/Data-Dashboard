@@ -374,6 +374,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Bind new buttons
   document.getElementById('btn-download')?.addEventListener('click', downloadChartCSV);
   document.getElementById('btn-share')?.addEventListener('click', makeShareLink);
+  document.getElementById('btn-sample')?.addEventListener('click', loadSampleData);
 
   // If there's a hash payload, load it (overrides cache/simulated)
   const used = loadFromHash();
@@ -381,3 +382,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // existing cached-data restore code already runs elsewhere; nothing more to do
   }
 });
+
+// ---- load sample CSV from examples/ directory ----
+async function loadSampleData() {
+  try {
+    const response = await fetch('examples/arcane-trends-sample.csv');
+    if (!response.ok) throw new Error('Failed to fetch sample data');
+    const text = await response.text();
+    const { labels, values } = parseTrendsCSV(text);
+    popularityChart.data.labels = labels;
+    popularityChart.data.datasets[0].label = 'Google Trends (Sample)';
+    popularityChart.data.datasets[0].data = values;
+    popularityChart.setDatasetVisibility(1, false);
+    popularityChart.options.plugins.title.text = 'Arcane popularity — Sample data';
+    popularityChart.update();
+    saveImportedData(labels, values);
+  } catch (error) {
+    console.error('Failed to load sample data', error);
+    alert('Could not load sample data. Make sure examples/arcane-trends-sample.csv exists.');
+  }
+}

@@ -106,6 +106,7 @@ header {
 
   max-width: 100%;
   min-height: 320px;
+  padding: 1rem;
 }
 
 /* mobile tweaks */
@@ -134,4 +135,17 @@ footer {
   background: var(--color-surface);
   border-top: 1px solid var(--color-border);
   color: var(--color-muted);
+}
+
+#controls a {
+  color: var(--color-accent-2);
+  text-decoration: none;
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+#controls a:hover {
+  background: rgba(255,255,255,0.06);
+  text-decoration: underline;
 }
