@@ -19,4 +19,14 @@ Visualize how Arcane’s hype rises and falls over time — sleek dark theme, sm
 - 📚 Wikipedia Pageviews (Arcane TV series)
 - 🎬 TMDB/IMDb ratings and popularity
 
+## Contributing
+- Found a bug or have an idea? Open an issue or PR. Keep changes small and documented. 🛠️
+- Add tests/data fixtures when adding new data sources.
+
+## Roadmap (short)
+- Add a tiny backend to fetch & cache Google Trends / TMDB / Wikipedia data.
+- Add scheduled updates and a small API to avoid CORS and rate limits.
+- Improve accessibility and mobile layout.
+- Add automated tests and CI (GitHub Actions). ✅
+
 Have fun exploring Piltover vs. Zaun vibes! 🧪⚙️

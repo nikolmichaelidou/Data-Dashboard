@@ -217,27 +217,62 @@ function parseTrendsCSV(text) {
   return { labels, values: monthly };
 }
 
+const STORAGE_KEY = 'arcane_trends_monthly';
+
+function saveImportedData(labels, values) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({ labels, values, ts: Date.now() }));
+  } catch (e) { console.warn('Could not save to localStorage', e); }
+}
+
+function loadCachedData() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const obj = JSON.parse(raw);
+    return obj && obj.labels && obj.values ? obj : null;
+  } catch (e) { return null; }
+}
+
+function resetToSimulated() {
+  // Call this to restore the original simulated dataset and label set.
+  popularityChart.data.labels = labels; // original simulated labels variable
+  popularityChart.data.datasets[0].data = searchInterest; // original simulated dataset
+  popularityChart.setDatasetVisibility(1, true);
+  popularityChart.options.plugins.title.text = 'Arcane popularity over time';
+  popularityChart.update();
+  localStorage.removeItem(STORAGE_KEY);
+}
+
 function importTrendsCSV(file) {
   const reader = new FileReader();
   reader.onload = () => {
     try {
-      const { labels, values } = parseTrendsCSV(String(reader.result));
-      // Replace labels and search dataset, hide social dataset
-      popularityChart.data.labels = labels;
+      const { labels: newLabels, values: monthly } = parseTrendsCSV(String(reader.result));
+      popularityChart.data.labels = newLabels;
       popularityChart.data.datasets[0].label = 'Google Trends (Arcane)';
-      popularityChart.data.datasets[0].data = values;
+      popularityChart.data.datasets[0].data = monthly;
       popularityChart.setDatasetVisibility(1, false);
       popularityChart.options.plugins.title.text = 'Arcane popularity — Google Trends (monthly)';
       popularityChart.update();
+      saveImportedData(newLabels, monthly); // <- save
     } catch (e) {
       console.error(e);
-      alert(`Failed to import CSV: ${e.message}\n\nExpected format: Google Trends export with a header like "Month,Arcane" or "Week,Arcane".`);
+      alert('Failed to import CSV. Ensure it is a Google Trends export.');
     }
   };
   reader.readAsText(file);
 }
 
-document.getElementById('csv-input')?.addEventListener('change', (e) => {
-  const f = e.target.files?.[0];
-  if (f) importTrendsCSV(f);
+// --- On load: restore cache if present ---
+document.addEventListener('DOMContentLoaded', () => {
+  const cached = loadCachedData();
+  if (cached) {
+    popularityChart.data.labels = cached.labels;
+    popularityChart.data.datasets[0].data = cached.values;
+    popularityChart.setDatasetVisibility(1, false);
+    popularityChart.options.plugins.title.text = 'Arcane popularity — Google Trends (cached)';
+    popularityChart.update();
+  }
+  document.getElementById('reset-data')?.addEventListener('click', resetToSimulated);
 });

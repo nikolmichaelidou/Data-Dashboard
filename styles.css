@@ -56,12 +56,31 @@ header {
   accent-color: var(--color-accent);
 }
 
+.btn {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.04);
+  color: var(--color-text);
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
 #chart-container {
   height: 420px;
 
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 8px;
+
+  max-width: 100%;
+  min-height: 320px;
+}
+
+/* mobile tweaks */
+@media (max-width: 600px) {
+  #controls { gap: 0.5rem; }
+  #chart-container { height: 300px; }
 }
 
 /* Minor polish */
