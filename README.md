@@ -14,6 +14,10 @@ Visualize how Arcane’s hype rises and falls over time — sleek dark theme, sm
 - From the dev container you can open Trends in your host browser:  
   `$BROWSER https://trends.google.com/trends/explore?q=Arcane`
 
+## New quick tricks
+- 📥 "Download CSV" — export the visible chart data for analysis/export.
+- 🔗 "Share link" — create a permalink that encodes the chart data in the URL hash (copy & paste to share).
+
 ## Data ideas
 - 🔎 Google Trends (Interest over time)
 - 📚 Wikipedia Pageviews (Arcane TV series)

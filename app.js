@@ -264,7 +264,86 @@ function importTrendsCSV(file) {
   reader.readAsText(file);
 }
 
-// --- On load: restore cache if present ---
+// ---- helper: safe base64 encode/decode for unicode ----
+function b64EncodeUnicode(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g,
+    (_, p1) => String.fromCharCode('0x' + p1)));
+}
+function b64DecodeUnicode(b64) {
+  return decodeURIComponent(Array.prototype.map.call(atob(b64), c =>
+    '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+}
+
+// ---- export current chart data as CSV ----
+function downloadChartCSV() {
+  const labels = popularityChart.data.labels || [];
+  const ds0 = popularityChart.data.datasets[0] || { data: [] };
+  const ds1 = popularityChart.data.datasets[1] || { data: [] };
+  const header = ['date', ds0.label || 'series1', ds1.label || 'series2'].join(',') + '\n';
+  const rows = labels.map((lab, i) => {
+    const a = ds0.data?.[i] ?? '';
+    const b = ds1.data?.[i] ?? '';
+    return `${lab},${a},${b}`;
+  }).join('\n');
+  const csv = header + rows;
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'arcane_popularity.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+// ---- create a shareable link containing current chart data (URL hash) ----
+function makeShareLink() {
+  const payload = {
+    labels: popularityChart.data.labels,
+    datasets: popularityChart.data.datasets.map(d => ({ label: d.label, data: d.data }))
+  };
+  try {
+    const encoded = b64EncodeUnicode(JSON.stringify(payload));
+    const link = `${location.origin}${location.pathname}#${encoded}`;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(link).then(() => alert('Share link copied to clipboard!'));
+    } else {
+      prompt('Copy this link to share', link);
+    }
+  } catch (e) {
+    console.error('Could not create share link', e);
+    alert('Failed to create share link.');
+  }
+}
+
+// ---- load chart data from URL hash if present ----
+function loadFromHash() {
+  const hash = location.hash && location.hash.slice(1);
+  if (!hash) return false;
+  try {
+    const json = b64DecodeUnicode(hash);
+    const obj = JSON.parse(json);
+    if (obj && obj.labels && obj.datasets) {
+      popularityChart.data.labels = obj.labels;
+      // try to map datasets back (keep existing colors/options)
+      obj.datasets.forEach((d, i) => {
+        if (!popularityChart.data.datasets[i]) return;
+        popularityChart.data.datasets[i].label = d.label;
+        popularityChart.data.datasets[i].data = d.data;
+      });
+      popularityChart.setDatasetVisibility(1, true);
+      popularityChart.options.plugins.title.text = 'Arcane popularity — shared view';
+      popularityChart.update();
+      return true;
+    }
+  } catch (e) {
+    console.warn('Failed to load shared data from URL hash', e);
+  }
+  return false;
+}
+
+// Ensure handlers run after DOM content loads
 document.addEventListener('DOMContentLoaded', () => {
   const cached = loadCachedData();
   if (cached) {
@@ -291,4 +370,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('show-chart').classList.remove('btn-active');
     document.getElementById('show-trends').classList.add('btn-active');
   });
+
+  // Bind new buttons
+  document.getElementById('btn-download')?.addEventListener('click', downloadChartCSV);
+  document.getElementById('btn-share')?.addEventListener('click', makeShareLink);
+
+  // If there's a hash payload, load it (overrides cache/simulated)
+  const used = loadFromHash();
+  if (!used) {
+    // existing cached-data restore code already runs elsewhere; nothing more to do
+  }
 });
